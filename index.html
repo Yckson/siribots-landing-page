@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiriBots</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+      .kits-swiper .swiper-slide {
+        opacity: 0.7;
+        transform: scale(0.88);
+        transition: transform 350ms ease, opacity 350ms ease;
+      }
+      .kits-swiper .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1.04);
+      }
+      .kits-pagination .swiper-pagination-bullet {
+        background: #ff914d;
+        opacity: 0.35;
+      }
+      .kits-pagination .swiper-pagination-bullet-active {
+        background: #ff914d;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="bg-[#020e1d] font-sans text-[#ecf2f8]">
+    <nav class="grid grid-cols-2 items-center px-8 py-6 md:grid-cols-3">
+      <div class="flex items-center">
+        <img src="./src/img/logo.png" alt="Logo SiriBots" class="h-24 w-auto" />
+      </div>
+
+      <ul class="hidden items-center justify-center gap-8 md:flex">
+        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Sobre</a></li>
+        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Categorias</a></li>
+        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Parceiros</a></li>
+        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Inscrição</a></li>
+      </ul>
+
+      <a href="#" class="justify-self-end inline-flex items-center gap-2 text-sm text-[#ff914d]">
+        IEEE / CAS Membership
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </nav>
+
+    <main>
+      <section class="grid grid-cols-1 gap-8 px-8 pb-16 pt-4 md:grid-cols-2 md:items-center">
+        <div>
+          <h1 class="mb-4 text-5xl font-bold text-[#ecf2f8] md:text-6xl">
+            O que é o <span class="text-[#ff914d]">SiriBots?</span>
+          </h1>
+          <p class="mb-4 text-justify text-lg leading-relaxed text-[#ecf2f8]">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex. Aliquam metus magna, mattis nec rutrum vel, imperdiet elementum elit.
+          </p>
+          <p class="text-justify text-lg leading-relaxed text-[#ecf2f8]">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex. Aliquam metus magna, mattis nec rutrum vel, imperdiet elementum elit.
+          </p>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="h-72 w-auto md:h-[36rem]" />
+        </div>
+      </section>
+
+      <h2 class="mb-6 text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Categorias</h2>
+      <section class="relative pb-36 pt-12">
+        <div class="pointer-events-none absolute inset-0">
+          <div class="absolute -inset-y-48 inset-x-0 blur-[8px] bg-[linear-gradient(to_bottom,rgba(124,68,45,0)_0%,rgba(124,68,45,0)_18%,rgba(124,68,45,0.86)_36%,rgba(124,68,45,0.86)_64%,rgba(124,68,45,0)_82%,rgba(124,68,45,0)_100%)]"></div>
+        </div>
+        <div class="relative z-10">
+          <div class="mx-auto grid max-w-4xl grid-cols-1 justify-items-center gap-8 px-8 md:grid-cols-2">
+            <article
+              class="flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
+              style="box-shadow: 0 12px 0 0 #020e1d, 0 32px 0 -6px rgba(2, 14, 29, 0.45), 0 52px 0 -8px rgba(2, 14, 29, 0.3);"
+            >
+              <h3 class="mb-4 text-2xl font-bold text-[#ff914d]">Line Follower</h3>
+              <img src="./src/img/Line_Following.jpg" alt="Categoria Line Follower" class="mb-5 h-52 w-full rounded object-cover" />
+              <p class="mb-6 text-sm text-[#ff914d]">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum, mauris ac feugiat venenatis.
+              </p>
+              <a href="#" class="mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
+                Ver mais
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </article>
+            <article
+              class="flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
+              style="box-shadow: 0 12px 0 0 #020e1d, 0 32px 0 -6px rgba(2, 14, 29, 0.45), 0 52px 0 -8px rgba(2, 14, 29, 0.3);"
+            >
+              <h3 class="mb-4 text-2xl font-bold text-[#ff914d]">Robô Sumo</h3>
+              <img src="./src/img/Robo_Sumo.jpg" alt="Categoria Robô Sumo" class="mb-5 h-52 w-full rounded object-cover" />
+              <p class="mb-6 text-sm text-[#ff914d]">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum, mauris ac feugiat venenatis.
+              </p>
+              <a href="#" class="mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
+                Ver mais
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-24">
+        <h2 class="text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Kits</h2>
+        <div class="relative mx-auto mt-10 w-full max-w-7xl px-3 md:px-8">
+          <button
+            class="kits-prev absolute left-0 top-1/2 z-20 -translate-y-1/2 rounded-full border border-[#7c442d] bg-[#020e1d]/90 p-3 text-[#ff914d] transition hover:bg-[#020e1d]"
+            aria-label="Imagem anterior"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button
+            class="kits-next absolute right-0 top-1/2 z-20 -translate-y-1/2 rounded-full border border-[#7c442d] bg-[#020e1d]/90 p-3 text-[#ff914d] transition hover:bg-[#020e1d]"
+            aria-label="Próxima imagem"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div
+            class="swiper kits-swiper overflow-hidden rounded-2xl px-10 md:px-12"
+            style="--swiper-pagination-color: #ff914d; --swiper-pagination-bullet-inactive-color: #ff914d; --swiper-pagination-bullet-inactive-opacity: 0.35;"
+          >
+            <div class="swiper-wrapper">
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Arduino Nano">
+                <img src="./src/img/kits/Arduino Nano.jpg" alt="Arduino Nano" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Kit Chassi 2WD">
+                <img src="./src/img/kits/Kit Chassi 2WD.jpg" alt="Kit Chassi 2WD" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Chave interruptora On-Off">
+                <img src="./src/img/kits/Chave interruptora On-Off.webp" alt="Chave interruptora On-Off" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Mini Protoboard 170 furos">
+                <img src="./src/img/kits/Mini Protoboard 170 furos.webp" alt="Mini Protoboard 170 furos" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Módulo Ponte H Dupla L9110S">
+                <img src="./src/img/kits/Módulo Ponte H Dupla L9110S.webp" alt="Módulo Ponte H Dupla L9110S" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Módulo Sensor Óptico Reflexivo TCRT5000">
+                <img src="./src/img/kits/Módulo Sensor Óptico Reflexivo TCRT5000.webp" alt="Módulo Sensor Óptico Reflexivo TCRT5000" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4" data-kit-title="Módulo Sensor Ultrassônico HC-SR04">
+                <img src="./src/img/kits/Módulo Sensor Ultrassônico HC-SR04.webp" alt="Módulo Sensor Ultrassônico HC-SR04" class="h-80 w-full rounded-xl object-cover" />
+              </div>
+            </div>
+          </div>
+
+          <div class="kits-pagination mt-6 !static text-center"></div>
+          <p id="kits-active-title" class="mt-4 text-center text-lg font-bold text-[#ff914d]"></p>
+        </div>
+      </section>
+
+      <section class="py-24">
+        <h2 class="text-center text-3xl font-bold text-[#ecf2f8]">Organizadores</h2>
+      </section>
+
+      <section class="py-24">
+        <h2 class="text-center text-3xl font-bold text-[#ecf2f8]">Patrocinadores</h2>
+      </section>
+
+      <section class="py-20">
+        <h2 class="text-center text-4xl font-bold text-[#ff914d]">Registre sua Equipe</h2>
+      </section>
+    </main>
+
+    <footer class="bg-[#7c442d]/20 px-4 py-8 text-center">
+      <div class="mb-4 flex items-center justify-center gap-4 text-[#a48990]">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M22 5.8C21.3 6.1 20.6 6.3 19.8 6.4C20.6 5.9 21.2 5.1 21.5 4.2C20.8 4.7 20 5 19.1 5.2C18.4 4.5 17.5 4 16.4 4C14.3 4 12.7 5.7 12.7 7.7C12.7 8 12.7 8.3 12.8 8.6C9.7 8.4 7 7 5.1 4.9C4.8 5.4 4.6 6 4.6 6.6C4.6 7.9 5.2 9.1 6.2 9.8C5.6 9.8 5 9.6 4.5 9.3V9.4C4.5 11.2 5.8 12.7 7.5 13.1C7.2 13.2 6.8 13.2 6.5 13.2C6.3 13.2 6.1 13.2 5.9 13.1C6.3 14.6 7.7 15.7 9.3 15.8C8 16.8 6.4 17.3 4.7 17.3C4.4 17.3 4.2 17.3 4 17.2C5.6 18.3 7.5 19 9.6 19C16.4 19 20.1 13.5 20.1 8.6V8.1C20.8 7.6 21.5 6.7 22 5.8Z" />
+        </svg>
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.2C6.6 2.2 2.2 6.6 2.2 12C2.2 16.6 5.3 20.4 9.6 21.5V14.9H7.6V12H9.6V9.8C9.6 7.8 10.8 6.6 12.7 6.6C13.6 6.6 14.6 6.8 14.6 6.8V8.8H13.5C12.4 8.8 12 9.5 12 10.2V12H14.5L14.1 14.9H12V21.5C16.3 20.4 19.4 16.6 19.4 12C19.4 6.6 15 2.2 9.6 2.2H12Z" />
+        </svg>
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7.5 3.5C5.3 3.5 3.5 5.3 3.5 7.5V16.5C3.5 18.7 5.3 20.5 7.5 20.5H16.5C18.7 20.5 20.5 18.7 20.5 16.5V7.5C20.5 5.3 18.7 3.5 16.5 3.5H7.5ZM12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12C8 9.8 9.8 8 12 8ZM16.7 6.8C17.2 6.8 17.6 7.2 17.6 7.7C17.6 8.2 17.2 8.6 16.7 8.6C16.2 8.6 15.8 8.2 15.8 7.7C15.8 7.2 16.2 6.8 16.7 6.8Z" />
+        </svg>
+      </div>
+      <p class="mb-4 text-sm text-[#a48990]">Termos | Privacidade | Contato</p>
+      <p class="text-xs text-[#a48990]">© 2026 SiriBots. Todos os direitos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      const kitsTitle = document.getElementById("kits-active-title");
+      const kitsSwiper = new Swiper(".kits-swiper", {
+        loop: true,
+        speed: 700,
+        slidesPerView: 1,
+        spaceBetween: 16,
+        centeredSlides: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        navigation: {
+          nextEl: ".kits-next",
+          prevEl: ".kits-prev",
+        },
+        pagination: {
+          el: ".kits-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+          },
+        },
+      });
+
+      const updateKitsTitle = (swiper) => {
+        const activeSlide = swiper.slides[swiper.activeIndex];
+        if (!activeSlide || !kitsTitle) return;
+        kitsTitle.textContent = activeSlide.dataset.kitTitle || "";
+      };
+
+      updateKitsTitle(kitsSwiper);
+      kitsSwiper.on("slideChangeTransitionStart", () => updateKitsTitle(kitsSwiper));
+    </script>
+  </body>
+</html>
