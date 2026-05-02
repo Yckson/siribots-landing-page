@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       .kits-swiper .swiper-slide {
         opacity: 0.7;
         transform: scale(0.88);
@@ -24,34 +27,151 @@
         background: #ff914d;
         opacity: 1;
       }
+      .organizers-swiper .swiper-slide {
+        transform: scale(0.94);
+        transition: transform 300ms ease;
+      }
+      .organizers-swiper .swiper-slide-active {
+        transform: scale(1.5);
+        z-index: 2;
+      }
+      /* Navbar sticky + scrolled state */
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 99999; /* ensure highest stacking order */
+        background-color: transparent;
+        /* initial padding smaller to keep navbar thin even before scroll */
+        padding: 1rem 2rem;
+        transition: background-color 360ms cubic-bezier(0.22,1,0.36,1), box-shadow 360ms cubic-bezier(0.22,1,0.36,1), padding 360ms, transform 360ms;
+      }
+      .top-nav.scrolled {
+        background-color: rgba(2,14,29,0.72);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        /* make navbar much slimmer when scrolled */
+        padding: 0.25rem 2rem;
+      }
+      /* Logo sizing: use height transitions to preserve aspect ratio (avoid transform squash) */
+      .logo-img {
+        display: inline-block;
+        width: auto;
+        height: 3.5rem; /* ~56px */
+        max-height: 4.5rem;
+        transition: height 360ms cubic-bezier(0.22,1,0.36,1), transform 360ms;
+      }
+      .top-nav.scrolled .logo-img {
+        height: 2.4rem; /* ~38px when scrolled */
+      }
+      /* Mobile menu animation and nav-toggle glow */
+      #mobile-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        margin-top: 0;
+        width: 100%;
+        overflow: hidden;
+        background-color: rgba(8,18,38,0.95);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        backdrop-filter: blur(6px);
+        transform-origin: top center;
+        opacity: 0;
+        transform: translateY(-8px) scale(0.995);
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 300ms cubic-bezier(0.22,1,0.36,1), transform 320ms cubic-bezier(0.22,1,0.36,1);
+      }
+      #mobile-menu.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+        visibility: visible;
+      }
+
+      #nav-toggle {
+        background: #ff914d;
+        color: #020e1d;
+        box-shadow: 0 10px 30px rgba(255,145,77,0.18), 0 0 0 1px rgba(255,145,77,0.06) inset;
+        border-radius: 9999px;
+        padding: 0.4rem 0.75rem;
+        transition: box-shadow 220ms ease, transform 220ms ease;
+        border: 1px solid rgba(255,145,77,0.12);
+      }
+      #nav-toggle:hover { box-shadow: 0 14px 42px rgba(255,145,77,0.24), 0 0 0 3px rgba(255,145,77,0.06) inset; transform: translateY(-1px); }
+      #nav-toggle:focus { outline: none; box-shadow: 0 0 0 8px rgba(255,145,77,0.12); }
+      .category-card {
+        border: 2px solid transparent;
+        will-change: transform, box-shadow, border-color;
+        transition:
+          transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 520ms cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 12px 0 0 #020e1d, 0 32px 0 -6px rgba(2, 14, 29, 0.45), 0 52px 0 -8px rgba(2, 14, 29, 0.3);
+      }
+      .category-card:hover,
+      .category-card:focus-within {
+        transform: translateY(-10px) scale(1.04);
+        border-color: rgba(255,145,77,0.9);
+        box-shadow:
+          0 0 0 14px rgba(2, 14, 29, 0.5),
+          0 28px 80px rgba(2, 14, 29, 0.28),
+          0 18px 0 0 #020e1d,
+          0 38px 0 -6px rgba(2, 14, 29, 0.45),
+          0 58px 0 -8px rgba(2, 14, 29, 0.3);
+      }
     </style>
   </head>
-  <body class="bg-[#020e1d] font-sans text-[#ecf2f8]">
-    <nav class="grid grid-cols-2 items-center px-8 py-6 md:grid-cols-3">
+  <body class="scroll-smooth bg-[#020e1d] font-sans text-[#ecf2f8]">
+    <nav class="top-nav sticky top-0 grid grid-cols-2 items-center px-8 py-6 md:grid-cols-3">
       <div class="flex items-center">
-        <img src="./src/img/logo.png" alt="Logo SiriBots" class="h-24 w-auto" />
+        <img src="./src/img/logo.png" alt="Logo SiriBots" class="logo-img h-24 w-auto" />
       </div>
 
+      <!-- Desktop links -->
       <ul class="hidden items-center justify-center gap-8 md:flex">
-        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Sobre</a></li>
-        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Categorias</a></li>
-        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Parceiros</a></li>
-        <li><a href="#" class="text-[#ecf2f8] transition hover:text-[#ff914d]">Inscrição</a></li>
+        <li><a href="#sobre" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Sobre</a></li>
+        <li><a href="#categorias" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Categorias</a></li>
+        <li><a href="#parceiros" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Parceiros</a></li>
+        <li><a href="#inscricao" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Inscrição</a></li>
       </ul>
 
-      <a href="#" class="justify-self-end inline-flex items-center gap-2 text-sm text-[#ff914d]">
-        IEEE / CAS Membership
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </a>
+      <div class="flex items-center justify-end gap-3">
+        <!-- Mobile toggle: visible on small screens only -->
+        <button id="nav-toggle" class="inline-flex items-center gap-2 md:hidden" aria-expanded="false" aria-controls="mobile-menu">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <!-- Membership button: hidden on small screens because toggle covers menu/actions -->
+        <a
+          href="#"
+          class="hidden md:inline-flex justify-self-end items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] px-5 py-3 text-sm font-semibold text-[#020e1d] shadow-lg shadow-[#ff914d]/25 transition-transform duration-300 hover:scale-105"
+        >
+          IEEE / CAS Membership
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Mobile dropdown menu (hidden by default) - expands full width under nav -->
+      <div id="mobile-menu" class="" style="">
+        <a href="#sobre" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Sobre</a>
+        <a href="#categorias" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Categorias</a>
+        <a href="#parceiros" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Parceiros</a>
+        <a href="#inscricao" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Inscrição</a>
+        <a href="#" class="block w-full px-4 py-3 text-sm text-[#020e1d] bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] font-semibold text-center">IEEE / CAS Membership</a>
+      </div>
     </nav>
 
     <main>
-      <section class="grid grid-cols-1 gap-8 px-8 pb-16 pt-4 md:grid-cols-2 md:items-center">
+      <section id="sobre" class="scroll-mt-24 grid grid-cols-1 gap-8 px-8 pb-16 pt-4 md:grid-cols-2 md:items-center">
         <div>
           <h1 class="mb-4 text-5xl font-bold text-[#ecf2f8] md:text-6xl">
-            O que é o <span class="text-[#ff914d]">SiriBots?</span>
+            O que é o <span class="bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] bg-clip-text text-transparent">SiriBots?</span>
           </h1>
           <p class="mb-4 text-justify text-lg leading-relaxed text-[#ecf2f8]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex. Aliquam metus magna, mattis nec rutrum vel, imperdiet elementum elit.
@@ -65,7 +185,7 @@
         </div>
       </section>
 
-      <h2 class="mb-6 text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Categorias</h2>
+      <h2 id="categorias" class="mb-6 scroll-mt-24 text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Categorias</h2>
       <section class="relative pb-36 pt-12">
         <div class="pointer-events-none absolute inset-0">
           <div class="absolute -inset-y-48 inset-x-0 blur-[8px] bg-[linear-gradient(to_bottom,rgba(124,68,45,0)_0%,rgba(124,68,45,0)_18%,rgba(124,68,45,0.86)_36%,rgba(124,68,45,0.86)_64%,rgba(124,68,45,0)_82%,rgba(124,68,45,0)_100%)]"></div>
@@ -73,8 +193,7 @@
         <div class="relative z-10">
           <div class="mx-auto grid max-w-4xl grid-cols-1 justify-items-center gap-8 px-8 md:grid-cols-2">
             <article
-              class="flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
-              style="box-shadow: 0 12px 0 0 #020e1d, 0 32px 0 -6px rgba(2, 14, 29, 0.45), 0 52px 0 -8px rgba(2, 14, 29, 0.3);"
+              class="category-card flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
             >
               <h3 class="mb-4 text-2xl font-bold text-[#ff914d]">Line Follower</h3>
               <img src="./src/img/Line_Following.jpg" alt="Categoria Line Follower" class="mb-5 h-52 w-full rounded object-cover" />
@@ -89,8 +208,7 @@
               </a>
             </article>
             <article
-              class="flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
-              style="box-shadow: 0 12px 0 0 #020e1d, 0 32px 0 -6px rgba(2, 14, 29, 0.45), 0 52px 0 -8px rgba(2, 14, 29, 0.3);"
+              class="category-card flex min-h-[32rem] w-full max-w-sm flex-col items-center overflow-hidden rounded-xl bg-[#020e1d] p-6 text-center"
             >
               <h3 class="mb-4 text-2xl font-bold text-[#ff914d]">Robô Sumo</h3>
               <img src="./src/img/Robo_Sumo.jpg" alt="Categoria Robô Sumo" class="mb-5 h-52 w-full rounded object-cover" />
@@ -108,7 +226,7 @@
         </div>
       </section>
 
-      <section class="py-24">
+      <section class="pt-24 pb-8">
         <h2 class="text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Kits</h2>
         <div class="relative mx-auto mt-10 w-full max-w-7xl px-3 md:px-8">
           <button
@@ -162,33 +280,74 @@
         </div>
       </section>
 
-      <section class="py-24">
-        <h2 class="text-center text-3xl font-bold text-[#ecf2f8]">Organizadores</h2>
+      <section class="pt-20 pb-15">
+        <h2 class="text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Organizadores</h2>
+        <div class="relative mx-auto mt-8 w-full max-w-4xl px-3 md:px-8">
+          <div class="swiper organizers-swiper overflow-hidden rounded-2xl px-6">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                  <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+                </div>
+                <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                  <img src="./src/img/organizers/CORETECH.png" alt="CoreTech" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+                </div>
+                <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                  <img src="./src/img/organizers/DCOMP.png" alt="DCOMP" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+                </div>
+                <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                  <img src="./src/img/organizers/IEEE.png" alt="IEEE" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+                </div>
+                <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                  <img src="./src/img/organizers/UFS.png" alt="UFS" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+                </div>
+              </div>
+          </div>
+        </div>
       </section>
 
-      <section class="py-24">
-        <h2 class="text-center text-3xl font-bold text-[#ecf2f8]">Patrocinadores</h2>
+      <section id="parceiros" class="scroll-mt-24 pt-24 pb-15">
+        <h2 class="text-center text-5xl font-bold text-[#ecf2f8] md:text-6xl">Patrocinadores</h2>
+        <div class="mt-8 flex items-center justify-center gap-12 px-4 lg:gap-20">
+          <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-32 md:h-40 lg:h-56 w-auto object-contain" />
+        </div>
       </section>
 
-      <section class="py-20">
-        <h2 class="text-center text-4xl font-bold text-[#ff914d]">Registre sua Equipe</h2>
+      <section id="inscricao" class="scroll-mt-24 py-20 px-8">
+        <h2 class="text-center text-5xl font-bold text-[#ff914d] md:text-6xl">Registre sua Equipe</h2>
+        <p class="mx-auto mt-6 max-w-3xl text-center text-lg leading-relaxed text-[#ecf2f8]">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex.
+        </p>
+        <div class="mt-8 flex justify-center">
+          <a
+            href="#"
+            class="inline-flex items-center justify-center rounded-full bg-[#ff914d] px-8 py-4 text-lg font-bold text-[#020e1d] transition hover:bg-[#ffb072]"
+          >
+            Registrar
+          </a>
+        </div>
       </section>
     </main>
 
     <footer class="bg-[#7c442d]/20 px-4 py-8 text-center">
       <div class="mb-4 flex items-center justify-center gap-4 text-[#a48990]">
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M22 5.8C21.3 6.1 20.6 6.3 19.8 6.4C20.6 5.9 21.2 5.1 21.5 4.2C20.8 4.7 20 5 19.1 5.2C18.4 4.5 17.5 4 16.4 4C14.3 4 12.7 5.7 12.7 7.7C12.7 8 12.7 8.3 12.8 8.6C9.7 8.4 7 7 5.1 4.9C4.8 5.4 4.6 6 4.6 6.6C4.6 7.9 5.2 9.1 6.2 9.8C5.6 9.8 5 9.6 4.5 9.3V9.4C4.5 11.2 5.8 12.7 7.5 13.1C7.2 13.2 6.8 13.2 6.5 13.2C6.3 13.2 6.1 13.2 5.9 13.1C6.3 14.6 7.7 15.7 9.3 15.8C8 16.8 6.4 17.3 4.7 17.3C4.4 17.3 4.2 17.3 4 17.2C5.6 18.3 7.5 19 9.6 19C16.4 19 20.1 13.5 20.1 8.6V8.1C20.8 7.6 21.5 6.7 22 5.8Z" />
-        </svg>
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 2.2C6.6 2.2 2.2 6.6 2.2 12C2.2 16.6 5.3 20.4 9.6 21.5V14.9H7.6V12H9.6V9.8C9.6 7.8 10.8 6.6 12.7 6.6C13.6 6.6 14.6 6.8 14.6 6.8V8.8H13.5C12.4 8.8 12 9.5 12 10.2V12H14.5L14.1 14.9H12V21.5C16.3 20.4 19.4 16.6 19.4 12C19.4 6.6 15 2.2 9.6 2.2H12Z" />
-        </svg>
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M7.5 3.5C5.3 3.5 3.5 5.3 3.5 7.5V16.5C3.5 18.7 5.3 20.5 7.5 20.5H16.5C18.7 20.5 20.5 18.7 20.5 16.5V7.5C20.5 5.3 18.7 3.5 16.5 3.5H7.5ZM12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12C8 9.8 9.8 8 12 8ZM16.7 6.8C17.2 6.8 17.6 7.2 17.6 7.7C17.6 8.2 17.2 8.6 16.7 8.6C16.2 8.6 15.8 8.2 15.8 7.7C15.8 7.2 16.2 6.8 16.7 6.8Z" />
-        </svg>
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:text-[#ff914d]">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0zM7 8h4.8v2.2h.1c.7-1.3 2.4-2.2 4-2.2 4.3 0 5.1 2.8 5.1 6.3V24H16v-7.8c0-1.9 0-4.4-2.7-4.4-2.7 0-3.1 2.1-3.1 4.3V24H7z" />
+          </svg>
+        </a>
+        <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="hover:text-[#ff914d]">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0016 3a4.48 4.48 0 00-4.47 4.48c0 .35.04.7.11 1.03A12.8 12.8 0 013 4s-4 9 5 13a13 13 0 01-8 2c12 7 27 0 27-16 0-.2 0-.39-.02-.58A9.72 9.72 0 0023 3z" />
+          </svg>
+        </a>
+        <a href="mailto:hello@example.com" aria-label="Email" class="hover:text-[#ff914d]">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18a2 2 0 002 2h16a2 2 0 002-2V6c0-1.1-.9-2-2-2zm0 4l-8 5L4 8V6l8 5 8-5v2z" />
+          </svg>
+        </a>
       </div>
-      <p class="mb-4 text-sm text-[#a48990]">Termos | Privacidade | Contato</p>
-      <p class="text-xs text-[#a48990]">© 2026 SiriBots. Todos os direitos reservados</p>
+      
+      <p class="text-xs text-[#a48990]">© 2026 Coretech. Todos os direitos reservados</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -201,7 +360,7 @@
         spaceBetween: 16,
         centeredSlides: true,
         autoplay: {
-          delay: 2500,
+          delay: 1000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         },
@@ -225,6 +384,19 @@
         },
       });
 
+      // Navbar scroll behaviour: add 'scrolled' class when user scrolls down
+      (function () {
+        const nav = document.querySelector('.top-nav');
+        if (!nav) return;
+        const threshold = 20;
+        const onScroll = () => {
+          if (window.scrollY > threshold) nav.classList.add('scrolled');
+          else nav.classList.remove('scrolled');
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      })();
+
       const updateKitsTitle = (swiper) => {
         const activeSlide = swiper.slides[swiper.activeIndex];
         if (!activeSlide || !kitsTitle) return;
@@ -233,6 +405,70 @@
 
       updateKitsTitle(kitsSwiper);
       kitsSwiper.on("slideChangeTransitionStart", () => updateKitsTitle(kitsSwiper));
+
+      const organizersSwiper = new Swiper(".organizers-swiper", {
+        loop: true,
+        speed: 700,
+        slidesPerView: 1,
+        spaceBetween: 12,
+        centeredSlides: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 16,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+        },
+      });
+
+      // Mobile nav toggle
+      (function () {
+        const toggle = document.getElementById('nav-toggle');
+        const menu = document.getElementById('mobile-menu');
+        if (!toggle || !menu) return;
+
+        const closeMenu = () => {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        };
+        const openMenu = () => {
+          menu.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
+        };
+
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (menu.classList.contains('open')) closeMenu();
+          else openMenu();
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (ev) => {
+          if (!menu.contains(ev.target) && ev.target !== toggle) closeMenu();
+        });
+
+        // Close menu on escape
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape') closeMenu();
+        });
+
+        // Close on resize to desktop
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            if (window.innerWidth >= 768) closeMenu();
+          }, 150);
+        });
+      })();
     </script>
   </body>
 </html>
