@@ -121,6 +121,61 @@
           0 38px 0 -6px rgba(2, 14, 29, 0.45),
           0 58px 0 -8px rgba(2, 14, 29, 0.3);
       }
+      /* Crab widget styles */
+      :root {
+        --crab-size-mobile: 56px;
+        --crab-size-desktop: 96px;
+      }
+      .crab {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: var(--crab-size-mobile);
+        height: var(--crab-size-mobile);
+        z-index: 999999;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        transition: top 700ms ease-in-out, transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 420ms ease;
+      }
+      @media (min-width: 768px) {
+        .crab { width: var(--crab-size-desktop); height: var(--crab-size-desktop); }
+      }
+
+      .crab.left { left: 0; transform: translate(-8%, -50%); }
+      .crab.right { right: 0; transform: translate(8%, -50%); }
+
+      .crab.hidden.left { transform: translate(-70%, -50%); opacity: 0.02; pointer-events: none; }
+      .crab.hidden.right { transform: translate(70%, -50%); opacity: 0.02; pointer-events: none; }
+
+      .crab.run.left { transform: translate(-140%, -50%); opacity: 0; pointer-events: none; }
+      .crab.run.right { transform: translate(140%, -50%); opacity: 0; pointer-events: none; }
+
+      .crab-button {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+      }
+
+      .crab-sprite {
+        width: 100%;
+        height: 100%;
+        background-image: url('./src/anim/Crab%20Sprite%20Sheet.png');
+        background-repeat: no-repeat;
+        background-position: 0px 0px;
+        /* JS will compute precise background-size and position for a 4x4 sprite */
+        image-rendering: pixelated;
+        will-change: background-position;
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+      }
     </style>
   </head>
   <body class="scroll-smooth bg-[#020e1d] font-sans text-[#ecf2f8]">
@@ -350,6 +405,12 @@
       <p class="text-xs text-[#a48990]">© 2026 Coretech. Todos os direitos reservados</p>
     </footer>
 
+    <!-- Crab widget element: fixed to screen sides -->
+    <div id="crab" class="crab left" aria-hidden="false">
+      <button class="crab-button" id="crab-btn" aria-label="Caranguejo" title="Caranguejo"></button>
+      <div class="crab-sprite" aria-hidden="true"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
       const kitsTitle = document.getElementById("kits-active-title");
@@ -468,6 +529,242 @@
             if (window.innerWidth >= 768) closeMenu();
           }, 150);
         });
+      })();
+    
+      /* Crab widget behavior: walk the sides, hide occasionally, run on click */
+      (function () {
+        const crab = document.getElementById('crab');
+        const crabBtn = document.getElementById('crab-btn');
+        if (!crab || !crabBtn) return;
+
+        const state = {
+          side: Math.random() > 0.5 ? 'left' : 'right',
+          hidden: false,
+          busy: false,
+          topPercent: null,
+        };
+
+        function applySide(side) {
+          crab.classList.remove('left', 'right');
+          crab.classList.add(side);
+          crab.dataset.side = side;
+        }
+
+        function placeAtPercent(pct) {
+          const bounded = Math.max(6, Math.min(94, pct));
+          state.topPercent = bounded;
+          crab.style.top = bounded + '%';
+        }
+
+        function randomPercentWide() {
+          return 15 + Math.floor(Math.random() * 70);
+        }
+
+        function randomNearbyPercent(maxDelta = 12) {
+          if (typeof state.topPercent !== 'number') return randomPercentWide();
+          const delta = Math.floor((Math.random() * 2 - 1) * maxDelta);
+          return Math.max(8, Math.min(92, Math.round(state.topPercent + delta)));
+        }
+
+        function appearFromSide(side, targetPercent) {
+          const runMs = 380;
+          applySide(side);
+          // start off-screen (run class) then remove to animate in
+          crab.classList.add('run');
+          crab.classList.remove('hidden');
+          // ensure positioned where it will land
+          placeAtPercent(targetPercent);
+          // small delay to ensure layout, then run in
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              // temporarily speed up transform for the dash
+              const prev = crab.style.transition || '';
+              crab.style.transition = crab.style.transition = 'transform ' + runMs + 'ms ease-out, top 700ms ease-in-out, opacity 420ms ease';
+              crab.classList.remove('run');
+              setTimeout(() => {
+                // restore transition
+                crab.style.transition = prev;
+              }, runMs + 50);
+            });
+          });
+        }
+
+        function hideTemporarily() {
+          if (state.busy || state.hidden) return;
+          // choose nearest side based on current horizontal position
+          const rect = crab.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const nearest = centerX < window.innerWidth / 2 ? 'left' : 'right';
+          if (nearest !== state.side) {
+            state.side = nearest;
+            applySide(nearest);
+          }
+          const runMs = 360;
+          // dash into the side quickly
+          // speed up transform then add run to move off-screen
+          const prev = crab.style.transition || '';
+          crab.style.transition = 'transform ' + runMs + 'ms ease-in, top 700ms ease-in-out, opacity 200ms ease';
+          // small delay then start dash
+          requestAnimationFrame(() => {
+            crab.classList.add('run');
+          });
+          // after dash completes, mark hidden and keep off-screen
+          setTimeout(() => {
+            state.hidden = true;
+            crab.classList.add('hidden');
+            // restore transition after hidden
+            crab.style.transition = prev;
+          }, runMs + 30);
+
+          // schedule reappearance from same nearest side (run in)
+          const appearDelay = 1900 + Math.random() * 2600;
+          setTimeout(() => {
+            state.hidden = false;
+            // pick a nearby landing position
+            const target = randomNearbyPercent(12);
+            appearFromSide(nearest, target);
+          }, appearDelay);
+        }
+
+        function runAway() {
+          if (state.busy) return;
+          state.busy = true;
+          // add run class to move off-screen
+          crab.classList.add('run');
+          // after it runs, flip side and reappear after short delay
+          setTimeout(() => {
+            // flip side
+            state.side = state.side === 'left' ? 'right' : 'left';
+            applySide(state.side);
+            // reset run/hidden and reposition
+            crab.classList.remove('run');
+            crab.classList.add('hidden');
+            setTimeout(() => {
+              placeAtPercent(randomPercentWide());
+              crab.classList.remove('hidden');
+              state.busy = false;
+            }, 600 + Math.random() * 800);
+          }, 650);
+        }
+
+        // Initial placement
+        applySide(state.side);
+        placeAtPercent(randomPercentWide());
+
+        // Start walking: periodically move up/down along the current side (smoother/slower)
+        let walkTimer = null;
+        function startWalking() {
+          if (walkTimer) return;
+          walkTimer = setInterval(() => {
+            if (state.busy || state.hidden) return;
+            placeAtPercent(randomNearbyPercent(10));
+          }, 2200 + Math.random() * 1200);
+        }
+        startWalking();
+
+        // Randomly hide/show and occasionally switch sides
+        setInterval(() => {
+          if (Math.random() < 0.35) hideTemporarily();
+          else if (Math.random() < 0.18) {
+            // small reposition along the side
+            placeAtPercent(randomNearbyPercent(12));
+          }
+          // occasionally switch sides slowly
+          if (Math.random() < 0.06 && !state.busy) {
+            state.side = state.side === 'left' ? 'right' : 'left';
+            applySide(state.side);
+          }
+        }, 2500 + Math.random() * 2500);
+
+        // Click / tap -> run away
+        crabBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          runAway();
+        });
+        // Touch support
+        crabBtn.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+          runAway();
+        }, { passive: true });
+
+        // Accessibility: keyboard activation
+        crabBtn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            runAway();
+          }
+        });
+
+        // Keep crab within safe vertical bounds on resize
+        window.addEventListener('resize', () => placeAtPercent(randomNearbyPercent(8)));
+
+        // Sprite animation using 4x4 frames from a 128x128 image
+        (function () {
+          const sprite = crab.querySelector('.crab-sprite');
+          if (!sprite) return;
+
+          const SPRITE = { imageW: 128, imageH: 128, cols: 4, rows: 4, frames: 16 };
+          let frame = 0;
+          let rafId = null;
+          let last = 0;
+          const FPS = 6; // slower frames per second for walking
+
+          function updateBgSize() {
+            const rect = crab.getBoundingClientRect();
+            const frameW = SPRITE.imageW / SPRITE.cols; // 32
+            const frameH = SPRITE.imageH / SPRITE.rows; // 32
+            const scaleX = rect.width / frameW;
+            const scaleY = rect.height / frameH;
+            const bgW = SPRITE.imageW * scaleX;
+            const bgH = SPRITE.imageH * scaleY;
+            sprite.style.backgroundSize = `${Math.round(bgW)}px ${Math.round(bgH)}px`;
+            return { frameWpx: Math.round(rect.width), frameHpx: Math.round(rect.height) };
+          }
+
+          function draw(i) {
+            const col = i % SPRITE.cols;
+            const row = Math.floor(i / SPRITE.cols);
+            const { frameWpx, frameHpx } = updateBgSize();
+            const posX = -(col * frameWpx);
+            const posY = -(row * frameHpx);
+            sprite.style.backgroundPosition = `${posX}px ${posY}px`;
+          }
+
+          function loop(ts) {
+            if (!last) last = ts;
+            const delta = ts - last;
+            const interval = 1000 / FPS;
+            if (delta >= interval) {
+              frame = (frame + 1) % SPRITE.frames;
+              draw(frame);
+              last = ts - (delta % interval);
+            }
+            rafId = requestAnimationFrame(loop);
+          }
+
+            // start with sprite preload (fallback to emoji if fails)
+            const imgSrc = sprite.style.backgroundImage.slice(5, -2) || './src/anim/Crab Sprite Sheet.png';
+            const img = new Image();
+            img.onload = () => {
+              draw(0);
+              rafId = requestAnimationFrame(loop);
+            };
+            img.onerror = () => {
+              // fallback: simple emoji if sprite fails to load
+              sprite.style.backgroundImage = 'none';
+              sprite.style.display = 'flex';
+              sprite.style.alignItems = 'center';
+              sprite.style.justifyContent = 'center';
+              sprite.style.fontSize = '1.5em';
+              sprite.textContent = '🦀';
+            };
+            img.src = imgSrc;
+
+            // keep in sync on resize
+            window.addEventListener('resize', () => {
+              updateBgSize();
+            });
+        })();
       })();
     </script>
   </body>
