@@ -344,9 +344,24 @@
       <section class="pt-20 pb-15">
         <h2 class="text-center text-3xl font-bold text-[#ecf2f8] md:text-6xl">Organizadores</h2>
         <div class="relative mx-auto mt-8 w-full max-w-4xl px-3 md:px-8">
-          <div class="flex items-center justify-center gap-8 md:gap-12 lg:gap-16 flex-wrap">
-            <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
-            <img src="./src/img/organizers/CORETECH.png" alt="CoreTech" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+          <div class="swiper organizers-swiper overflow-hidden rounded-2xl px-6">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                <img src="./src/img/organizers/CORETECH.png" alt="CoreTech" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                <img src="./src/img/organizers/DCOMP.png" alt="DCOMP" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                <img src="./src/img/organizers/IEEE.png" alt="IEEE" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+              </div>
+              <div class="swiper-slide bg-[#020e1d] p-4 flex items-center justify-center">
+                <img src="./src/img/organizers/UFS.png" alt="UFS" class="h-28 md:h-36 lg:h-44 w-auto object-contain" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -454,6 +469,29 @@
 
       updateKitsTitle(kitsSwiper);
       kitsSwiper.on("slideChangeTransitionStart", () => updateKitsTitle(kitsSwiper));
+
+      const organizersSwiper = new Swiper(".organizers-swiper", {
+        loop: true,
+        speed: 700,
+        slidesPerView: 1,
+        spaceBetween: 12,
+        centeredSlides: true,
+        autoplay: {
+          delay: 1000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 16,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+        },
+      });
 
 
       // Mobile nav toggle
