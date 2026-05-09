@@ -34,28 +34,29 @@
         top: 0;
         z-index: 99999; /* ensure highest stacking order */
         background-color: transparent;
-        /* initial padding smaller to keep navbar thin even before scroll */
-        padding: 1rem 2rem;
-        transition: background-color 360ms cubic-bezier(0.22,1,0.36,1), box-shadow 360ms cubic-bezier(0.22,1,0.36,1), padding 360ms, transform 360ms;
+        /* fixed height prevents layout shifts when scroll state changes */
+        height: 88px;
+        padding: 0 2rem;
+        transition: background-color 360ms cubic-bezier(0.22,1,0.36,1), box-shadow 360ms cubic-bezier(0.22,1,0.36,1), transform 360ms;
       }
       .top-nav.scrolled {
         background-color: rgba(2,14,29,0.72);
         box-shadow: 0 8px 24px rgba(0,0,0,0.45);
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
-        /* make navbar much slimmer when scrolled */
-        padding: 0.25rem 2rem;
       }
       /* Logo sizing: use height transitions to preserve aspect ratio (avoid transform squash) */
       .logo-img {
         display: inline-block;
         width: auto;
-        height: 3.5rem; /* ~56px */
-        max-height: 4.5rem;
-        transition: height 360ms cubic-bezier(0.22,1,0.36,1), transform 360ms;
+        height: auto;
+        max-height: 3.5rem;
+        object-fit: contain;
+        transform-origin: left center;
+        transition: transform 360ms cubic-bezier(0.22,1,0.36,1);
       }
       .top-nav.scrolled .logo-img {
-        height: 2.4rem; /* ~38px when scrolled */
+        transform: scale(0.8);
       }
       /* Mobile menu animation and nav-toggle glow */
       #mobile-menu {
@@ -202,9 +203,9 @@
     </style>
   </head>
   <body class="scroll-smooth bg-[#020e1d] font-sans text-[#ecf2f8]">
-    <nav class="top-nav sticky top-0 grid grid-cols-2 items-center px-8 py-6 md:grid-cols-3">
+    <nav class="top-nav grid grid-cols-2 items-center md:grid-cols-3">
       <div class="flex items-center">
-        <img src="./src/img/logo.png" alt="Logo SiriBots" class="logo-img h-24 w-auto" />
+        <img src="./src/img/logo.png" alt="Logo SiriBots" class="logo-img w-auto" />
       </div>
 
       <!-- Desktop links -->
@@ -488,13 +489,30 @@
       (function () {
         const nav = document.querySelector('.top-nav');
         if (!nav) return;
-        const threshold = 20;
+        const threshold = 12;
+        const hysteresis = 8;
+        let isScrolled = false;
+        let ticking = false;
+        const applyScrollState = () => {
+          const y = Math.max(0, window.scrollY);
+          if (!isScrolled && y > threshold + hysteresis) {
+            nav.classList.add('scrolled');
+            isScrolled = true;
+          } else if (isScrolled && y < threshold - hysteresis) {
+            nav.classList.remove('scrolled');
+            isScrolled = false;
+          }
+        };
         const onScroll = () => {
-          if (window.scrollY > threshold) nav.classList.add('scrolled');
-          else nav.classList.remove('scrolled');
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            applyScrollState();
+            ticking = false;
+          });
         };
         window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+        applyScrollState();
       })();
 
       const updateKitsTitle = (swiper) => {
