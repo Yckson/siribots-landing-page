@@ -127,6 +127,23 @@
         padding-left: 4rem !important;
         padding-right: 4rem !important;
       }
+      .edital-pulse {
+        animation: editalPulse 1400ms ease-in-out 2;
+      }
+      @keyframes editalPulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255,145,77,0.55);
+        }
+        55% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 18px rgba(255,145,77,0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255,145,77,0);
+        }
+      }
       /* Crab widget styles */
       :root {
         --crab-size-mobile: 56px;
@@ -195,6 +212,7 @@
         <li><a href="#sobre" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Sobre</a></li>
         <li><a href="#categorias" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Categorias</a></li>
         <li><a href="#parceiros" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Parceiros</a></li>
+        <li><a href="#edital" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Edital</a></li>
         <li><a href="#inscricao" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Inscrição</a></li>
       </ul>
 
@@ -223,6 +241,7 @@
         <a href="#sobre" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Sobre</a>
         <a href="#categorias" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Categorias</a>
         <a href="#parceiros" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Parceiros</a>
+        <a href="#edital" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Edital</a>
         <a href="#inscricao" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Inscrição</a>
         <a href="#" class="block w-full px-4 py-3 text-sm text-[#020e1d] bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] font-semibold text-center">IEEE / CAS Membership</a>
       </div>
@@ -235,11 +254,8 @@
             O que é o <span class="bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] bg-clip-text text-transparent">SiriBots?</span>
           </h1>
           <p class="mb-4 text-justify text-base md:text-base md:text-lg leading-relaxed text-[#ecf2f8]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex. Aliquam metus magna, mattis nec rutrum vel, imperdiet elementum elit.
-          </p>
-          <p class="text-justify text-base md:text-lg leading-relaxed text-[#ecf2f8]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex. Aliquam metus magna, mattis nec rutrum vel, imperdiet elementum elit.
-          </p>
+            Muito mais que uma disputa, o SiriBots Challenge é uma iniciativa dedicada a fomentar a robótica, a engenharia e a cultura maker. O objetivo central é proporcionar um espaço de aprendizado colaborativo e competitivo, incentivando o desenvolvimento de competências essenciais — como a resolução de problemas e o trabalho em equipe — e consolidando-se como um marco para o fortalecimento da comunidade tecnológica e acadêmica.
+          
         </div>
         <div class="flex flex-col items-center justify-center">
           <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="hero-image h-72 w-auto md:h-[36rem]" />
@@ -259,9 +275,9 @@
               <h3 class="mb-4 text-xl md:text-2xl font-bold text-[#ff914d]">Line Follower</h3>
               <img src="./src/img/Line_Following.jpg" alt="Categoria Line Follower" class="mb-5 h-52 w-full rounded object-cover" />
               <p class="mb-6 text-sm text-[#ff914d]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum, mauris ac feugiat venenatis.
+                 Nesta modalidade, o objetivo é correr contra o relógio! O robô deve identificar e percorrer um trajeto demarcado no chão de forma totalmente autônoma, no menor tempo possível
               </p>
-              <a href="#" class="mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
+              <a href="#edital" class="js-edital-link mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
                 Ver mais
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -274,9 +290,9 @@
               <h3 class="mb-4 text-xl md:text-2xl font-bold text-[#ff914d]">Robô Sumo</h3>
               <img src="./src/img/Robo_Sumo.jpg" alt="Categoria Robô Sumo" class="mb-5 h-52 w-full rounded object-cover" />
               <p class="mb-6 text-sm text-[#ff914d]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum, mauris ac feugiat venenatis.
+                Uma verdadeira batalha de titãs de acrílico! Dois robôs são colocados em uma arena circular (o dojô) e o objetivo é rastrear, empurrar e jogar o oponente para fora da borda branca
               </p>
-              <a href="#" class="mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
+              <a href="#edital" class="js-edital-link mt-auto inline-flex items-center gap-2 text-[#ff914d] hover:underline">
                 Ver mais
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -373,14 +389,34 @@
         </div>
       </section>
 
+      <section id="edital" class="scroll-mt-24 py-20 px-8">
+        <div class="mx-auto max-w-5xl rounded-3xl border border-[#123140] bg-[linear-gradient(135deg,#0b1b33_0%,#061425_100%)] px-6 py-12 text-center shadow-[0_30px_80px_rgba(2,14,29,0.45)] md:px-12">
+          <h2 class="text-3xl font-bold text-[#ecf2f8] md:text-5xl">Leia o Edital da Competição</h2>
+          <p class="mx-auto mt-5 max-w-3xl text-base md:text-lg leading-relaxed text-[#c9d6e4]">
+            Todas as regras, criterios de avaliação, prazos e detalhes das categorias estão reunidos no edital oficial. Recomenda-se a leitura completa antes da inscrição da equipe.
+          </p>
+          <div class="mt-8 flex justify-center">
+            <a
+              id="edital-button"
+              href="./src/edital.pdf"
+              class="inline-flex items-center justify-center rounded-full bg-[#ff914d] px-8 py-4 text-base md:text-lg font-bold text-[#020e1d] shadow-lg shadow-[#ff914d]/30 transition-transform duration-300 hover:scale-105"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver edital
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section id="inscricao" class="scroll-mt-24 py-20 px-8">
         <h2 class="text-center text-3xl font-bold text-[#ff914d] md:text-6xl">Registre sua Equipe</h2>
         <p class="mx-auto mt-6 max-w-3xl text-center text-base md:text-lg leading-relaxed text-[#ecf2f8]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at sem ullamcorper, porttitor ipsum vel, dapibus orci. Maecenas nisi erat, maximus at eros vulputate, imperdiet iaculis ex.
+          Clique no botão abaixo para preencher o forms de inscrição d  e sua equipe, atente-se as regras e comprometimentos presentes no edital
         </p>
         <div class="mt-8 flex justify-center">
           <a
-            href="#"
+            href="https://docs.google.com/forms/d/1qDDRz5r2orMiQYtPtTjN5WQ-RmVwYjSaXCEOoWQObT8/edit"
             class="register-button inline-flex items-center justify-center rounded-full bg-[#ff914d] px-8 py-4 text-base md:text-lg font-bold text-[#020e1d] hover:bg-[#ffb072]"
           >
             Registrar
@@ -492,6 +528,29 @@
           },
         },
       });
+
+      // Scroll to edital and pulse the button from card "Ver mais"
+      (function () {
+        const editalSection = document.getElementById('edital');
+        const editalButton = document.getElementById('edital-button');
+        const editalLinks = document.querySelectorAll('.js-edital-link');
+        if (!editalSection || !editalButton || !editalLinks.length) return;
+
+        const triggerPulse = () => {
+          editalButton.classList.remove('edital-pulse');
+          // restart animation reliably
+          void editalButton.offsetWidth;
+          editalButton.classList.add('edital-pulse');
+        };
+
+        editalLinks.forEach((link) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            editalSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(triggerPulse, 500);
+          });
+        });
+      })();
 
 
       // Mobile nav toggle
