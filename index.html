@@ -847,6 +847,7 @@
           busy: false,
           topPercent: null,
           clickCount: 0,
+          ignoreCloseUntil: 0,
         };
 
         function applySide(side) {
@@ -981,28 +982,18 @@
           }
         }, 2500 + Math.random() * 2500);
 
-        // Click / tap -> run away
-        crabBtn.addEventListener('click', (e) => {
+        // Click / tap -> run away (pointerup avoids duplicate click/touch)
+        crabBtn.addEventListener('pointerup', (e) => {
           e.stopPropagation();
           state.clickCount += 1;
           if (state.clickCount === 3 && puzzle) {
             puzzle.classList.add('open');
             puzzle.setAttribute('aria-hidden', 'false');
+            state.ignoreCloseUntil = Date.now() + 250;
             if (puzzleInput) puzzleInput.focus();
           }
           runAway();
         });
-        // Touch support
-        crabBtn.addEventListener('touchstart', (e) => {
-          e.stopPropagation();
-          state.clickCount += 1;
-          if (state.clickCount === 3 && puzzle) {
-            puzzle.classList.add('open');
-            puzzle.setAttribute('aria-hidden', 'false');
-            if (puzzleInput) puzzleInput.focus();
-          }
-          runAway();
-        }, { passive: true });
 
         // Accessibility: keyboard activation
         crabBtn.addEventListener('keydown', (e) => {
@@ -1025,6 +1016,7 @@
           };
 
           puzzle.addEventListener('click', (e) => {
+            if (Date.now() < state.ignoreCloseUntil) return;
             if (e.target === puzzle) closePuzzle();
           });
 
