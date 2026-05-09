@@ -200,6 +200,146 @@
         position: absolute;
         inset: 0;
       }
+
+      .cipher-text {
+        letter-spacing: 0.08em;
+        opacity: 0.72;
+        filter: blur(0.6px);
+        user-select: none;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .locked-link {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .bugged-image {
+        filter: contrast(1.1) saturate(0.55) hue-rotate(18deg) blur(10px);
+        transform: scale(1.01) skewX(0.8deg);
+        opacity: 0.8;
+        animation: bugBlink 900ms steps(2, end) infinite, bugJitter 160ms steps(2, end) infinite, bugSparks 520ms steps(2, end) infinite;
+        will-change: transform, filter;
+      }
+
+      .no-spark.bugged-image {
+        animation: bugBlinkNoSpark 900ms steps(2, end) infinite, bugJitter 160ms steps(2, end) infinite;
+        box-shadow: none !important;
+      }
+
+      @keyframes bugBlink {
+        0% {
+          box-shadow: 0 0 0 0 rgba(255, 145, 77, 0);
+          filter: contrast(1.1) saturate(0.55) hue-rotate(18deg) blur(10px);
+        }
+        50% {
+          box-shadow: 0 0 22px 4px rgba(255, 145, 77, 0.55), 0 0 40px rgba(166, 76, 255, 0.45);
+          filter: contrast(1.25) saturate(1) hue-rotate(285deg) blur(8px);
+        }
+        100% {
+          box-shadow: 0 0 18px 2px rgba(166, 76, 255, 0.45), 0 0 36px rgba(255, 145, 77, 0.35);
+          filter: contrast(1.02) saturate(0.65) hue-rotate(20deg) blur(12px);
+        }
+      }
+
+      @keyframes bugSparks {
+        0% {
+          box-shadow: 0 0 0 rgba(255, 145, 77, 0), 0 0 0 rgba(166, 76, 255, 0);
+        }
+        40% {
+          box-shadow:
+            -6px -4px 0 rgba(255, 145, 77, 0.55),
+            8px 2px 0 rgba(166, 76, 255, 0.45),
+            -10px 6px 0 rgba(255, 145, 77, 0.4),
+            6px -8px 0 rgba(166, 76, 255, 0.35);
+        }
+        70% {
+          box-shadow:
+            10px -6px 0 rgba(255, 145, 77, 0.5),
+            -8px 4px 0 rgba(166, 76, 255, 0.5),
+            14px 8px 0 rgba(255, 145, 77, 0.35),
+            -12px -10px 0 rgba(166, 76, 255, 0.3);
+        }
+        100% {
+          box-shadow: 0 0 0 rgba(255, 145, 77, 0), 0 0 0 rgba(166, 76, 255, 0);
+        }
+      }
+
+      @keyframes bugBlinkNoSpark {
+        0% {
+          filter: contrast(1.1) saturate(0.55) hue-rotate(18deg) blur(10px);
+        }
+        50% {
+          filter: contrast(1.25) saturate(1) hue-rotate(285deg) blur(8px);
+        }
+        100% {
+          filter: contrast(1.02) saturate(0.65) hue-rotate(20deg) blur(12px);
+        }
+      }
+
+      @keyframes bugJitter {
+        0% { transform: translate(0, 0) scale(1.01) skewX(0.8deg); }
+        25% { transform: translate(-1px, 1px) scale(1.02) skewX(0.4deg); }
+        50% { transform: translate(1px, -1px) scale(1.01) skewX(1deg); }
+        75% { transform: translate(-2px, 0) scale(1.02) skewX(0.6deg); }
+        100% { transform: translate(0, -1px) scale(1.01) skewX(0.8deg); }
+      }
+
+      .puzzle-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000000;
+        display: grid;
+        place-items: center;
+        background: rgba(2, 14, 29, 0.86);
+        backdrop-filter: blur(6px);
+        padding: 1.5rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 260ms ease;
+      }
+      .puzzle-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .puzzle-card {
+        width: min(720px, 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 145, 77, 0.35);
+        background: linear-gradient(145deg, rgba(11, 27, 51, 0.98), rgba(6, 20, 37, 0.98));
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        text-align: center;
+      }
+      .puzzle-card p {
+        color: #ecf2f8;
+        line-height: 1.7;
+      }
+      .puzzle-input {
+        width: min(360px, 100%);
+        margin: 1.25rem auto 0;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 145, 77, 0.4);
+        background: rgba(2, 14, 29, 0.65);
+        padding: 0.75rem 1.25rem;
+        color: #ecf2f8;
+      }
+      .puzzle-button {
+        margin-top: 1rem;
+        border-radius: 999px;
+        background: #ff914d;
+        color: #020e1d;
+        padding: 0.65rem 1.6rem;
+        font-weight: 700;
+      }
+      .puzzle-error {
+        margin-top: 0.75rem;
+        color: #ffb072;
+        font-size: 0.9rem;
+        min-height: 1.2rem;
+      }
     </style>
   </head>
   <body class="scroll-smooth bg-[#020e1d] font-sans text-[#ecf2f8]">
@@ -227,7 +367,8 @@
 
         <!-- Membership button: hidden on small screens because toggle covers menu/actions -->
         <a
-          href="#"
+          href="https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=MEMCAS004&searchResults=Y"
+          target="_blank"
           class="hidden md:inline-flex justify-self-end items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] px-5 py-3 text-sm font-semibold text-[#020e1d] shadow-lg shadow-[#ff914d]/25 transition-transform duration-300 hover:scale-105"
         >
           IEEE / CAS Membership
@@ -259,7 +400,7 @@
           
         </div>
         <div class="flex flex-col items-center justify-center">
-          <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="hero-image h-72 w-auto md:h-[36rem]" />
+          <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="hero-image no-spark h-72 w-auto md:h-[36rem]" />
         </div>
       </section>
 
@@ -451,6 +592,21 @@
       <div class="crab-sprite" aria-hidden="true"></div>
     </div>
 
+    <div id="crab-puzzle" class="puzzle-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="puzzle-card">
+        <p>
+          Nasço do assistente de voz que carrega o nome de quem anda de lado na praia.<br />
+          Cresço na rede de fotos quadradas, onde o nosso "Núcleo" exibe sua história.<br />
+          Mas só acordo de verdade quando o aço e a engenharia entram na arena para lutar.
+        </p>
+        <form id="puzzle-form">
+          <input id="puzzle-input" class="puzzle-input" type="text" autocomplete="off" placeholder="Digite a resposta" />
+          <div class="puzzle-error" id="puzzle-error"></div>
+          <button type="submit" class="puzzle-button">Confirmar</button>
+        </form>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
       const kitsTitle = document.getElementById("kits-active-title");
@@ -611,11 +767,78 @@
           }, 150);
         });
       })();
+
+      // Encrypt explanatory content until date, with optional unlock via puzzle
+      (function () {
+        const lockUntil = new Date('2026-05-11T00:00:00');
+        const cipherTargets = document.querySelectorAll('main p, main h1, main h2, main h3');
+        const signupButtons = document.querySelectorAll('.register-button');
+        const buggedImages = document.querySelectorAll('main img');
+
+        const encodeText = (text) => {
+          try {
+            return btoa(unescape(encodeURIComponent(text)));
+          } catch (err) {
+            return text.split('').reverse().join('');
+          }
+        };
+
+        const lockElement = (el) => {
+          const plain = (el.textContent || '').trim();
+          if (!plain) return;
+          if (!el.dataset.plain) el.dataset.plain = plain;
+          if (!el.dataset.cipher) el.dataset.cipher = encodeText(plain);
+          el.textContent = el.dataset.cipher;
+          el.classList.add('cipher-text');
+        };
+
+        const unlockElement = (el) => {
+          if (!el.dataset.plain) return;
+          el.textContent = el.dataset.plain;
+          el.classList.remove('cipher-text');
+        };
+
+        const lockContent = () => {
+          cipherTargets.forEach(lockElement);
+          signupButtons.forEach((btn) => {
+            lockElement(btn);
+            btn.classList.add('locked-link');
+            btn.setAttribute('aria-disabled', 'true');
+            btn.setAttribute('tabindex', '-1');
+          });
+          buggedImages.forEach((img) => img.classList.add('bugged-image'));
+        };
+
+        const unlockContent = () => {
+          cipherTargets.forEach(unlockElement);
+          signupButtons.forEach((btn) => {
+            unlockElement(btn);
+            btn.classList.remove('locked-link');
+            btn.removeAttribute('aria-disabled');
+            btn.removeAttribute('tabindex');
+          });
+          buggedImages.forEach((img) => img.classList.remove('bugged-image'));
+        };
+
+        const shouldLock = Date.now() < lockUntil.getTime();
+        if (shouldLock) lockContent();
+        else unlockContent();
+
+        window.addEventListener('load', () => {
+          alert('Existe um enigma na pagina. Encare como um desafio para ser resolvido.');
+        });
+
+        window.__siribotsUnlock = unlockContent;
+      })();
     
       /* Crab widget behavior: walk the sides, hide occasionally, run on click */
       (function () {
         const crab = document.getElementById('crab');
         const crabBtn = document.getElementById('crab-btn');
+        const puzzle = document.getElementById('crab-puzzle');
+        const puzzleForm = document.getElementById('puzzle-form');
+        const puzzleInput = document.getElementById('puzzle-input');
+        const puzzleError = document.getElementById('puzzle-error');
         if (!crab || !crabBtn) return;
 
         const state = {
@@ -623,6 +846,7 @@
           hidden: false,
           busy: false,
           topPercent: null,
+          clickCount: 0,
         };
 
         function applySide(side) {
@@ -760,11 +984,23 @@
         // Click / tap -> run away
         crabBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          state.clickCount += 1;
+          if (state.clickCount === 3 && puzzle) {
+            puzzle.classList.add('open');
+            puzzle.setAttribute('aria-hidden', 'false');
+            if (puzzleInput) puzzleInput.focus();
+          }
           runAway();
         });
         // Touch support
         crabBtn.addEventListener('touchstart', (e) => {
           e.stopPropagation();
+          state.clickCount += 1;
+          if (state.clickCount === 3 && puzzle) {
+            puzzle.classList.add('open');
+            puzzle.setAttribute('aria-hidden', 'false');
+            if (puzzleInput) puzzleInput.focus();
+          }
           runAway();
         }, { passive: true });
 
@@ -772,9 +1008,44 @@
         crabBtn.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
+            state.clickCount += 1;
+            if (state.clickCount === 3 && puzzle) {
+              puzzle.classList.add('open');
+              puzzle.setAttribute('aria-hidden', 'false');
+              if (puzzleInput) puzzleInput.focus();
+            }
             runAway();
           }
         });
+
+        if (puzzle && puzzleForm && puzzleInput && puzzleError) {
+          const closePuzzle = () => {
+            puzzle.classList.remove('open');
+            puzzle.setAttribute('aria-hidden', 'true');
+          };
+
+          puzzle.addEventListener('click', (e) => {
+            if (e.target === puzzle) closePuzzle();
+          });
+
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && puzzle.classList.contains('open')) closePuzzle();
+          });
+
+          puzzleForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const value = puzzleInput.value.trim().toLowerCase();
+            if (value === 'siribots') {
+              puzzleError.textContent = 'Resposta correta. Conteudo desbloqueado.';
+              if (typeof window.__siribotsUnlock === 'function') {
+                window.__siribotsUnlock();
+              }
+              setTimeout(() => closePuzzle(), 900);
+              return;
+            }
+            puzzleError.textContent = 'Resposta incorreta. Tente novamente.';
+          });
+        }
 
         // Keep crab within safe vertical bounds on resize
         window.addEventListener('resize', () => placeAtPercent(randomNearbyPercent(8)));
