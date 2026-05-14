@@ -117,7 +117,17 @@
           0 58px 0 -8px rgba(2, 14, 29, 0.3);
       }
       .hero-image {
+        width: min(90vw, 22rem);
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
         transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      @media (min-width: 768px) {
+        .hero-image {
+          width: auto;
+          height: 36rem;
+        }
       }
       .hero-image:hover {
         transform: scale(1.04);
@@ -486,7 +496,7 @@
           
         </div>
         <div class="flex flex-col items-center justify-center">
-          <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="hero-image no-spark h-72 w-auto md:h-[36rem]" />
+          <img src="./src/img/powered_by.png" alt="Parceiros SiriBots" class="hero-image no-spark" />
         </div>
       </section>
 
