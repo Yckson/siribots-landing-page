@@ -341,26 +341,110 @@
         font-size: 0.9rem;
         min-height: 1.2rem;
       }
+
+      .schedule-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+      .schedule-day {
+        position: relative;
+        border-radius: 22px;
+        border: 1px solid rgba(18, 49, 64, 0.9);
+        padding: 1.75rem;
+        background: linear-gradient(135deg, rgba(11, 27, 51, 0.95), rgba(5, 18, 32, 0.98));
+        box-shadow: 0 28px 70px rgba(2, 14, 29, 0.45);
+        overflow: hidden;
+      }
+      .schedule-day::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff914d, rgba(255, 176, 114, 0));
+      }
+      .schedule-day h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #ff914d;
+      }
+      .schedule-badge {
+        border-radius: 999px;
+        padding: 0.25rem 0.75rem;
+        background: rgba(255, 145, 77, 0.12);
+        color: #ffb072;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .schedule-list {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+      }
+      @media (min-width: 768px) {
+        .schedule-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      .schedule-item {
+        display: grid;
+        gap: 0.5rem;
+        border-radius: 16px;
+        border: 1px solid rgba(18, 49, 64, 0.7);
+        background: rgba(2, 14, 29, 0.8);
+        padding: 0.9rem 1rem;
+        transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .schedule-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(2, 14, 29, 0.35);
+      }
+      .schedule-time {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: fit-content;
+        border-radius: 999px;
+        padding: 0.2rem 0.7rem;
+        background: rgba(255, 145, 77, 0.18);
+        color: #ffb072;
+        font-weight: 700;
+        font-size: 0.85rem;
+      }
+      .schedule-title {
+        color: #ecf2f8;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .schedule-detail {
+        color: #c9d6e4;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
     </style>
   </head>
   <body class="scroll-smooth bg-[#020e1d] font-sans text-[#ecf2f8]">
-    <nav class="top-nav grid grid-cols-2 items-center md:grid-cols-3">
+    <nav class="top-nav grid grid-cols-2 items-center lg:grid-cols-3">
       <div class="flex items-center">
         <img src="./src/img/logo.png" alt="Logo SiriBots" class="logo-img w-auto" />
       </div>
 
       <!-- Desktop links -->
-      <ul class="hidden items-center justify-center gap-8 md:flex">
+      <ul class="hidden items-center justify-center gap-8 lg:flex">
         <li><a href="#sobre" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Sobre</a></li>
         <li><a href="#categorias" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Categorias</a></li>
         <li><a href="#parceiros" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Parceiros</a></li>
+        <li><a href="#cronograma" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Cronograma</a></li>
         <li><a href="#edital" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Edital</a></li>
         <li><a href="#inscricao" class="text-[#ecf2f8] transition hover:text-[#ff914d] hover:underline hover:decoration-2 hover:decoration-[#ff914d] underline-offset-4">Inscrição</a></li>
       </ul>
 
       <div class="flex items-center justify-end gap-3">
         <!-- Mobile toggle: visible on small screens only -->
-        <button id="nav-toggle" class="inline-flex items-center gap-2 md:hidden" aria-expanded="false" aria-controls="mobile-menu">
+        <button id="nav-toggle" class="inline-flex items-center gap-2 lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -370,7 +454,7 @@
         <a
           href="https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=MEMCAS004&searchResults=Y"
           target="_blank"
-          class="hidden md:inline-flex justify-self-end items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] px-5 py-3 text-sm font-semibold text-[#020e1d] shadow-lg shadow-[#ff914d]/25 transition-transform duration-300 hover:scale-105"
+          class="hidden lg:inline-flex justify-self-end items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] px-5 py-3 text-sm font-semibold text-[#020e1d] shadow-lg shadow-[#ff914d]/25 transition-transform duration-300 hover:scale-105"
         >
           IEEE / CAS Membership
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -384,6 +468,7 @@
         <a href="#sobre" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Sobre</a>
         <a href="#categorias" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Categorias</a>
         <a href="#parceiros" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Parceiros</a>
+        <a href="#cronograma" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Cronograma</a>
         <a href="#edital" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Edital</a>
         <a href="#inscricao" class="block w-full border-b border-[#123140] px-4 py-3 text-sm text-[#ecf2f8] hover:bg-[#0f1724]">Inscrição</a>
         <a href="#" class="block w-full px-4 py-3 text-sm text-[#020e1d] bg-[linear-gradient(135deg,#ff914d_0%,#ffb072_100%)] font-semibold text-center">IEEE / CAS Membership</a>
@@ -530,6 +615,63 @@
         <div class="mt-8 flex flex-col items-center justify-center gap-8 px-4 md:flex-row md:gap-12 lg:gap-20">
           <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-32 md:h-40 lg:h-56 w-auto object-contain" />
           <img src="./src/img/patro/Logotipo_fapese.png" alt="FAPESE" class="h-14 md:h-20 lg:h-24 w-auto object-contain" />
+        </div>
+      </section>
+
+      <section id="cronograma" class="scroll-mt-24 py-20 px-8">
+        <h2 class="text-center text-3xl font-bold text-[#ecf2f8] md:text-6xl">Cronograma do Evento</h2>
+        <p class="mx-auto mt-4 max-w-3xl text-center text-base md:text-lg leading-relaxed text-[#c9d6e4]">
+          Confira os horários oficiais do minicurso e das competições.
+        </p>
+        <div class="mx-auto mt-10 max-w-6xl">
+          <div class="schedule-grid">
+            <article class="schedule-day">
+              <h3>
+                Dia 21 de Maio
+                <span class="schedule-badge">Minicurso</span>
+              </h3>
+              <div class="schedule-list">
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-chalkboard-user"></i> 17:00 - 18:30</span>
+                  <div class="schedule-title">Capacitação técnica</div>
+                  <div class="schedule-detail">Lab D3: introdução ao kit e fundamentos para a montagem.</div>
+                </div>
+              </div>
+            </article>
+            <article class="schedule-day">
+              <h3>
+                Dia 22 de Maio
+                <span class="schedule-badge">Competição</span>
+              </h3>
+              <div class="schedule-list">
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-screwdriver-wrench"></i> 08:00 - 09:00</span>
+                  <div class="schedule-title">Inspeção técnica</div>
+                  <div class="schedule-detail">Pesagem, dimensões e definição da ordem de chamada.</div>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-route"></i> 09:00 - 12:00</span>
+                  <div class="schedule-title">Bloco 1: Seguidor de Linha</div>
+                  <div class="schedule-detail">Dinâmica das 3 rodadas com melhor volta.</div>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-mug-hot"></i> 12:00 - 13:30</span>
+                  <div class="schedule-title">Pit Stop oficial</div>
+                  <div class="schedule-detail">Coffee break, troca de código e manutenção nos boxes.</div>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-robot"></i> 13:30 - 16:30</span>
+                  <div class="schedule-title">Bloco 2: Sumô Autônomo</div>
+                  <div class="schedule-detail">Batalhas eliminatórias e estratégia de arena.</div>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time"><i class="fa-solid fa-award"></i> 16:30 - 20:00</span>
+                  <div class="schedule-title">Painel tecnológico e premiação</div>
+                  <div class="schedule-detail">Encerramento oficial com celebração das equipes.</div>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
