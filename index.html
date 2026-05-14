@@ -529,6 +529,7 @@
         <h2 class="text-center text-3xl font-bold text-[#ecf2f8] md:text-6xl">Patrocinadores</h2>
         <div class="mt-8 flex items-center justify-center gap-12 px-4 lg:gap-20">
           <img src="./src/img/organizers/CAS.png" alt="CAS" class="h-32 md:h-40 lg:h-56 w-auto object-contain" />
+          <img src="./src/img/patro/Logotipo_fapese.png" alt="FAPESE" class="h-14 md:h-20 lg:h-24 w-auto object-contain" />
         </div>
       </section>
 
@@ -825,10 +826,6 @@
         const shouldLock = Date.now() < lockUntil.getTime();
         if (shouldLock) lockContent();
         else unlockContent();
-
-        window.addEventListener('load', () => {
-          alert('Existe um enigma na pagina. Encare como um desafio para ser resolvido.');
-        });
 
         window.__siribotsUnlock = unlockContent;
       })();
